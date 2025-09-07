@@ -1,11 +1,28 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils.translation import gettext_lazy as _
+import os
+
+def user_profile_image_path(instance, filename):
+    """Generate upload path for user profile images"""
+    # Get file extension
+    ext = filename.split('.')[-1]
+    # Generate new filename: profile_images/user_{id}.{ext}
+    filename = f'user_{instance.id}.{ext}'
+    return os.path.join('profile_images', filename)
 
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
+    profile_image = models.ImageField(
+        upload_to=user_profile_image_path,
+        blank=True,
+        null=True,
+        help_text='Profile image for the user'
+    )
     groups = models.ManyToManyField(
         'auth.Group',
         verbose_name=_('groups'),
