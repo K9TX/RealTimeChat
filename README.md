@@ -20,14 +20,6 @@ A modern, real-time chat application built with Django Channels (WebSocket backe
 - Read/unread message status
 - User search and chat initiation
 
-### 📱 Mobile-First Design
-
-- Fully responsive design with mobile navigation
-- WhatsApp-like interface
-- Cyberpunk/futuristic dark theme
-- Smooth animations and transitions
-- Mobile back navigation for seamless UX
-
 ### 🚀 Advanced Features
 
 - File upload and sharing capabilities
@@ -63,11 +55,10 @@ A modern, real-time chat application built with Django Channels (WebSocket backe
 
 Before running this project, make sure you have the following installed:
 
-- **Python 3.8+** - [Download Python](https://www.python.org/downloads/)
-- **Node.js 16+** - [Download Node.js](https://nodejs.org/)
-- **MySQL 8.0+** - [Download MySQL](https://dev.mysql.com/downloads/)
-- **Redis Server** - [Download Redis](https://redis.io/download) or use Docker
-- **Git** - [Download Git](https://git-scm.com/downloads)
+- **Python 3.8+** -
+- **Node.js 16+** -
+- **MySQL 8.0+** - 
+- **Redis Server** - 
 
 ## 🚀 Installation & Setup
 
@@ -100,13 +91,6 @@ pip install -r requirements.txt
 
 1. **Create MySQL Database:**
 
-```sql
-CREATE DATABASE realchat_db;
-CREATE USER 'realchat_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON realchat_db.* TO 'realchat_user'@'localhost';
-FLUSH PRIVILEGES;
-```
-
 2. **Configure Environment Variables:**
 
 # Copy environment file
@@ -129,12 +113,11 @@ python manage.py createsuperuser
 #### Start Redis Server
 
 ````bash
-# Windows (if installed locally)
+# Windows (if installed locally -->Optional)
 redis-server
 
 #### Start Backend Server
 ```bash
-# Development server with Daphne (supports WebSockets)
 python manage.py runserver
 
 
@@ -154,20 +137,6 @@ npm install
 
 #### Configure Environment Variables
 
-Create a `.env` file in the `frontend` directory:
-
-```env
-# API Configuration
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_WS_URL=ws://localhost:8000
-
-# App Configuration
-REACT_APP_NAME=RealChat
-REACT_APP_VERSION=1.0.0
-
-# Development Settings
-GENERATE_SOURCEMAP=false
-```
 
 #### Start Frontend Development Server
 
@@ -175,37 +144,6 @@ GENERATE_SOURCEMAP=false
 npm start
 ```
 
-Frontend will be running at: `http://localhost:3000`
-
-## 🔧 Development Workflow
-
-### Running the Full Application
-
-1. **Start Redis Server:**
-
-   ```bash
-   redis-server
-   ```
-
-2. **Start Backend (Terminal 1):**
-
-   ```bash
-   cd backend
-   source venv/bin/activate  # or venv\Scripts\activate on Windows
-   python manage.py runserver
-   ```
-
-3. **Start Frontend (Terminal 2):**
-
-   ```bash
-   cd frontend
-   npm start
-   ```
-
-4. **Access Application:**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - Admin Panel: http://localhost:8000/admin
 
 ### Testing the Real-Time Features
 
@@ -218,18 +156,6 @@ Frontend will be running at: `http://localhost:3000`
    - Username changes
    - File uploads
 
-## 📱 Mobile Testing
-
-1. **Test Responsive Design:**
-
-   - Open Chrome DevTools
-   - Toggle Device Toolbar (Ctrl+Shift+M)
-   - Test various device sizes
-
-2. **Test Mobile Navigation:**
-   - Chat list view on mobile
-   - Back navigation from chat to list
-   - Touch interactions
 
 ## 🐛 Troubleshooting
 
@@ -266,45 +192,3 @@ Frontend will be running at: `http://localhost:3000`
    python manage.py makemigrations --empty chat
    python manage.py migrate
    ```
-
-## 📚 API Documentation
-
-### Authentication Endpoints
-
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `POST /api/auth/refresh/` - Token refresh
-
-### Chat Endpoints
-
-- `GET /api/chat/rooms/` - Get user's chat rooms
-- `GET /api/chat/messages/<room_id>/` - Get messages for a room
-- `POST /api/chat/search-users/` - Search for users
-
-### WebSocket Endpoints
-
-- `ws://localhost:8000/ws/chat/<room_id>/` - Real-time chat
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -m 'Add feature'`
-4. Push to branch: `git push origin feature-name`
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👨‍💻 Author
-
-Your Name - [Your GitHub](https://github.com/yourusername)
-
-## 🙏 Acknowledgments
-
-- Django Channels for WebSocket support
-- Material-UI for the component library
-- Redis for real-time message handling
-- Inspiration from modern chat applications
