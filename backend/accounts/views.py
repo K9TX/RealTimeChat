@@ -11,7 +11,8 @@ from django.conf import settings
 from .serializers import (
     UserSerializer, LoginSerializer, PasswordResetRequestSerializer,
     OTPVerificationSerializer, ChangePasswordSerializer, EmailVerificationSerializer,
-    SendVerificationSerializer, GoogleLoginSerializer, UpdateUsernameSerializer
+    SendVerificationSerializer, GoogleLoginSerializer, UpdateUsernameSerializer,
+    ProfileImageUploadSerializer
 )
 from .models import User, OTP
 from channels.layers import get_channel_layer
@@ -447,3 +448,79 @@ class UpdateUsernameView(APIView):
         return Response({
             'user': UserSerializer(request.user).data
         })
+
+class ProfileImageUploadView(APIView):
+    permission_classes = (IsAuthenticated,)
+    
+    def post(self, request):
+        """Upload or update user profile image"""
+        serializer = ProfileImageUploadSerializer(instance=request.user, data=request.data)
+        if serializer.is_valid():
+            # Delete old profile image if exists
+            if request.user.profile_image:
+                try:
+                    request.user.profile_image.delete(save=False)
+                except:
+                    pass  # Ignore errors if file doesn't exist
+            
+            updated_user = serializer.save()
+            
+            # Broadcast user update to all chat rooms where user participates
+            self.broadcast_user_update(updated_user)
+            
+            return Response({
+                'message': 'Profile image updated successfully',
+                'user': UserSerializer(updated_user).data
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request):
+        """Remove user profile image"""
+        if request.user.profile_image:
+            try:
+                request.user.profile_image.delete(save=False)
+                request.user.profile_image = None
+                request.user.save()
+                
+                # Broadcast user update to all chat rooms
+                self.broadcast_user_update(request.user)
+                
+                return Response({
+                    'message': 'Profile image removed successfully',
+                    'user': UserSerializer(request.user).data
+                })
+            except Exception as e:
+                return Response({
+                    'error': 'Failed to remove profile image'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({
+                'message': 'No profile image to remove'
+            })
+    
+    def broadcast_user_update(self, user):
+        """Broadcast user profile update to all chat rooms where user participates"""
+        from chat.models import ChatRoom
+        
+        channel_layer = get_channel_layer()
+        if not channel_layer:
+            return
+        
+        # Get all chat rooms where user is a participant
+        user_rooms = ChatRoom.objects.filter(participants=user, is_active=True)
+        
+        for room in user_rooms:
+            group_name = f'chat_{room.id}'
+            
+            # Send user profile update message to the room group
+            async_to_sync(channel_layer.group_send)(group_name, {
+                'type': 'user_profile_update',
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email': user.email,
+                    'profile_image': user.profile_image.url if user.profile_image else None
+                }
+            })
