@@ -55,6 +55,7 @@ export const ChatProvider = ({ children }) => {
       websocketService.addEventListener('file_message', handleNewMessage),
       websocketService.addEventListener('user_status', handleUserStatus),
       websocketService.addEventListener('user_update', handleUserUpdate),
+      websocketService.addEventListener('user_profile_update', handleUserUpdate),
       websocketService.addEventListener('typing_indicator', handleTypingIndicator),
       websocketService.addEventListener('error', handleWebSocketError)
     ];
