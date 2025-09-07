@@ -103,6 +103,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const uploadProfileImage = async (imageFile) => {
+    try {
+      const data = await authService.uploadProfileImage(imageFile);
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const removeProfileImage = async () => {
+    try {
+      const data = await authService.removeProfileImage();
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -116,6 +136,8 @@ export const AuthProvider = ({ children }) => {
     verifyEmail,
     googleLogin,
     updateUsername,
+    uploadProfileImage,
+    removeProfileImage,
     setUser,
   };
 
