@@ -107,6 +107,47 @@ const authService = {
     return response.data;
   },
 
+  uploadProfileImage: async (imageFile) => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append('profile_image', imageFile);
+    
+    const response = await axios.post(
+      `${API_URL}/auth/profile/upload-image/`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    // Update user data in localStorage
+    if (response.data.user) {
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+    }
+
+    return response.data;
+  },
+
+  removeProfileImage: async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(
+      `${API_URL}/auth/profile/upload-image/`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // Update user data in localStorage
+    if (response.data.user) {
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+    }
+
+    return response.data;
+  },
+
   getCurrentUser: () => {
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
