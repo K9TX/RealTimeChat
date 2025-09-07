@@ -34,12 +34,6 @@ A modern, real-time chat application built with Django Channels (WebSocket backe
 
 - **Django 4.2+** - Web framework
 - **Django REST Framework** - API development
-- **Django Channels** - WebSocket support for real-time features
-- **Redis** - Channel layer backend for WebSocket scaling
-- **JWT Authentication** - Secure token-based auth
-- **MySQL** - Primary database
-- **Daphne** - ASGI server for Django Channels
-- **Pillow** - Image processing for file uploads
 
 ### Frontend
 
@@ -48,8 +42,7 @@ A modern, real-time chat application built with Django Channels (WebSocket backe
 - **WebSocket API** - Real-time communication
 - **React Router** - Client-side routing
 - **Axios** - HTTP client for API calls
-- **Context API** - State management
-- **Custom CSS** - Cyberpunk theme with animations
+
 
 ## 📋 Prerequisites
 
