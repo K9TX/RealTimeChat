@@ -139,7 +139,7 @@ npm install
 #### Start Frontend Development Server
 
 ```bash
-npm start
+npm run dev
 ```
 
 
