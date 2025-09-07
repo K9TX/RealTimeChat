@@ -8,10 +8,11 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    profile_image = serializers.ImageField(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'password2', 'phone_number')
+        fields = ('id', 'username', 'email', 'password', 'password2', 'phone_number', 'profile_image', 'first_name', 'last_name')
         extra_kwargs = {
             'email': {'required': True}
         }
@@ -85,5 +86,25 @@ class UpdateUsernameSerializer(serializers.ModelSerializer):
         import re
         if not re.match(r'^[a-zA-Z0-9_]+$', value):
             raise serializers.ValidationError("Username can only contain letters, numbers, and underscores.")
+        
+        return value
+
+class ProfileImageUploadSerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(required=True)
+    
+    class Meta:
+        model = User
+        fields = ('profile_image',)
+    
+    def validate_profile_image(self, value):
+        # Validate file size (max 5MB)
+        max_size = 5 * 1024 * 1024  # 5MB
+        if value.size > max_size:
+            raise serializers.ValidationError("Image file too large. Maximum size is 5MB.")
+        
+        # Validate file type
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        if value.content_type not in allowed_types:
+            raise serializers.ValidationError("Invalid image type. Allowed types: JPEG, PNG, GIF, WebP.")
         
         return value
