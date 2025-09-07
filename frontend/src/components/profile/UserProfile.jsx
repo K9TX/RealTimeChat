@@ -25,9 +25,10 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useChatContext } from '../../contexts/ChatContext';
+import ProfileImageUpload from './ProfileImageUpload';
 
 const UserProfile = ({ open, onClose }) => {
-  const { user, updateUsername, logout } = useAuth();
+  const { user, updateUsername, logout, setUser } = useAuth();
   const { refreshUserData } = useChatContext();
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState(user?.username || '');
@@ -182,7 +183,7 @@ const UserProfile = ({ open, onClose }) => {
       </DialogTitle>
 
       <DialogContent sx={{ p: 3 }}>
-        {/* User Avatar Section */}
+        {/* User Avatar Section with Image Upload */}
         <Box
           sx={{
             display: 'flex',
@@ -191,23 +192,17 @@ const UserProfile = ({ open, onClose }) => {
             mb: 4
           }}
         >
-          <Avatar
-            className="cyber-avatar pulse"
-            sx={{
-              width: 120,
-              height: 120,
-              fontSize: '2.5rem',
-              background: 'linear-gradient(45deg, var(--primary-neon), var(--secondary-neon))',
-              border: '3px solid var(--primary-neon)',
-              color: 'var(--bg-primary)',
-              fontFamily: 'var(--font-secondary)',
-              fontWeight: 'bold',
-              mb: 2,
-              boxShadow: 'var(--glow-primary)'
+          <ProfileImageUpload 
+            user={user}
+            onImageUpdate={(updatedUser) => {
+              // Update user data in auth context (already handled by the context methods)
+              // Refresh chat data to show updated profile images
+              if (refreshUserData) {
+                refreshUserData(updatedUser);
+              }
             }}
-          >
-            {user.username?.charAt(0).toUpperCase()}
-          </Avatar>
+            disabled={isEditing || loading}
+          />
           
           <Typography
             variant="h6"
@@ -215,7 +210,8 @@ const UserProfile = ({ open, onClose }) => {
               color: 'var(--text-primary)',
               fontFamily: 'var(--font-secondary)',
               textAlign: 'center',
-              mb: 1
+              mb: 1,
+              mt: 2
             }}
           >
             {user.first_name && user.last_name 
