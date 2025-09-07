@@ -195,6 +195,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send user update to all participants
         await self.send(text_data=json.dumps(event))
     
+    async def user_profile_update(self, event):
+        # Send user profile update to all participants
+        await self.send(text_data=json.dumps(event))
+    
     # Database operations
     @database_sync_to_async
     def save_message(self, content, message_type):
