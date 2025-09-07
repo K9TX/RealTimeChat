@@ -66,7 +66,6 @@ Before running this project, make sure you have the following installed:
 
 ```bash
 git clone https://github.com/yourusername/realchat.git
-cd realchat/realtimechat
 ```
 
 ### 2. Backend Setup (Django)
