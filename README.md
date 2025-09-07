@@ -109,12 +109,13 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-#### Start Redis Server
+#### Start Redis Server(Optional)
 
 ````bash
 # Windows (if installed locally -->Optional)
 redis-server
 
+````
 #### Start Backend Server
 ```bash
 python manage.py runserver
