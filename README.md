@@ -1,6 +1,6 @@
 # RealChat - Real-Time Chat Application 💬
 
-A modern, real-time chat application built with Django Channels (WebSocket backend) and React (frontend), featuring user authentication, real-time messaging, file sharing, and cyberpunk-inspired UI design.
+A modern, real-time chat application built with Django Channels (WebSocket backend) and React (frontend), featuring user authentication, real-time messaging, file sharing, and futuristic-inspired UI design.
 
 ## ✨ Features
 
@@ -9,7 +9,6 @@ A modern, real-time chat application built with Django Channels (WebSocket backe
 - User Registration & Login with JWT Authentication
 - Profile Management (Username, Email editing)
 - Secure password reset functionality
-- User online/offline status indicators
 
 ### 💬 Real-Time Chat
 
@@ -135,8 +134,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-
 
 
 ## 🐛 Troubleshooting
