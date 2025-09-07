@@ -149,6 +149,16 @@ const ChatWindow = ({ onMobileBack, onSearchClick }) => {
     return otherParticipant ? "Online" : null;
   };
 
+  const getProfileImageUrl = (participant) => {
+    if (!participant?.profile_image) return null;
+    
+    // Handle both full URLs and relative paths
+    if (participant.profile_image.startsWith('http')) {
+      return participant.profile_image;
+    }
+    return `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000'}${participant.profile_image}`;
+  };
+
   if (!currentRoom) {
     return (
       <Box
@@ -202,19 +212,36 @@ const ChatWindow = ({ onMobileBack, onSearchClick }) => {
         </IconButton>
         {currentRoom.room_type === "private" && (
           <Avatar
+            src={(() => {
+              const otherParticipant = currentRoom.participants?.find(
+                (p) => p.id !== user?.id
+              );
+              return getProfileImageUrl(otherParticipant);
+            })()}
             className="cyber-avatar"
             sx={{
               width: { xs: 36, md: 40 },
               height: { xs: 36, md: 40 },
-              background:
-                "linear-gradient(45deg, var(--primary-neon), var(--secondary-neon))",
+              background: (() => {
+                const otherParticipant = currentRoom.participants?.find(
+                  (p) => p.id !== user?.id
+                );
+                return getProfileImageUrl(otherParticipant) 
+                  ? 'transparent' 
+                  : "linear-gradient(45deg, var(--primary-neon), var(--secondary-neon))";
+              })(),
               border: "2px solid var(--primary-neon)",
               color: "var(--bg-primary)",
               fontFamily: "var(--font-secondary)",
               fontWeight: "bold",
             }}
           >
-            {roomDisplayName.charAt(0).toUpperCase()}
+            {(() => {
+              const otherParticipant = currentRoom.participants?.find(
+                (p) => p.id !== user?.id
+              );
+              return !getProfileImageUrl(otherParticipant) ? roomDisplayName.charAt(0).toUpperCase() : null;
+            })()}
           </Avatar>
         )}
 
