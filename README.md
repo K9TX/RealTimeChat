@@ -120,9 +120,8 @@ redis-server
 ```bash
 python manage.py runserver
 
-
-
-### 3. Frontend Setup (React)
+````
+ Frontend Setup (React)
 
 #### Navigate to Frontend Directory
 ```bash
@@ -136,7 +135,7 @@ npm install
 ```
 
 #### Configure Environment Variables
-
+    cp .env.example .env
 
 #### Start Frontend Development Server
 
@@ -145,16 +144,6 @@ npm start
 ```
 
 
-### Testing the Real-Time Features
-
-1. Register/Login with multiple users
-2. Open multiple browser tabs or use incognito mode
-3. Start conversations and test:
-   - Real-time messaging
-   - Typing indicators
-   - Online/offline status
-   - Username changes
-   - File uploads
 
 
 ## 🐛 Troubleshooting
